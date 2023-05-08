@@ -16,3 +16,4 @@ Folgende Technologien werden genutzt: ReactJS, Node.js, Sqlite
 - Bearbeiten der Benutzer
 - Chat(db2)
 - Logging
+- Responsive Design if not yet implemented
