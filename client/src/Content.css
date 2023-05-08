@@ -1,0 +1,7 @@
+.content{
+    display: flex; 
+    width: calc(100vw - 240px);   
+    min-height: 100vh;
+    padding-left: 240px;
+    background-color: #f9fafb;
+}
