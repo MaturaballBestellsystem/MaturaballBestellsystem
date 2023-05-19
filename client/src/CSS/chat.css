@@ -1,0 +1,117 @@
+.chat{
+    height: calc(100vh - 50px);
+    width: 100%;
+}
+
+.chat-feed{
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5 rem;
+    height: calc(100% - 150px);
+    overflow-y: auto;
+}
+
+.chat form{
+    /* border: 1px solid black; */
+    height: 80px;
+    /* width: 100% !important; */
+    max-width: 100%;
+    display: flex;
+    border-top: 1px solid #e4e7eb;
+}
+
+.chat_input input{
+        all: unset;
+        border-radius: 0.375rem;
+        height: 36px;
+        width: 100%;        
+        margin-bottom: 0px;
+        margin-right: 0px;
+        border: 0.5px solid #6B7280 !important;
+        font-size: 14px;
+        text-indent: 5px;
+    }
+
+    .chat_input input:focus{
+        border: 0.5px solid #6B7280 !important;
+    }
+
+    .chat_input input:active{
+        border: 0.5px solid #6B7280 !important;
+    }
+
+
+    .chat form span{
+        font-size: 14px;
+        align-self: flex-start;
+        margin-top: 4px;
+    }
+
+    .chat_input{
+        display: flex;        
+        margin-top: 2px;
+    }
+
+    .chat form button{
+        display: flex;
+        height: 36px;
+        width: 56px;
+        outline: none;
+        border: none;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        align-self: flex-end;
+    }
+
+        .chat form button:hover{
+            cursor: pointer;
+        }
+        .chat form button img{
+            height: 26px;
+            filter: invert(44%) sepia(79%) saturate(2890%) hue-rotate(199deg) brightness(96%) contrast(93%);
+        }
+
+.chat-message{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    max-width: 300px;
+    min-width: 80px;
+    min-height: 30px;
+    background-color: #2f80ed;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 0.5rem;
+    color: white;
+}
+    .chat-user{
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+    .chat-text{
+        width: fit-content;
+        max-width: 300px;
+        height: fit-content;
+    }
+
+    .chat-date{
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+
+    .chat-time{
+        align-self: flex-end;
+        margin-top: 4px;
+        font-size: 12px;
+    }
+
+    @media screen and (max-width: 756px){
+        .chat{
+            height: calc(100vh - 100px);
+            width: 100%;
+        }
+    }

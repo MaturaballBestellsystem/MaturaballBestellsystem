@@ -1,0 +1,127 @@
+.navbar{
+    z-index: 1000;
+    height: 80px;
+    width: 100vw;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    -webkit-box-shadow: 0px -2px 20px -7px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px -2px 20px -7px rgba(0,0,0,0.5);
+    box-shadow: 0px -2px 20px -7px rgba(0,0,0,0.5);
+    border-radius:   2rem 2rem 0 0;
+    overflow: hidden;
+}
+
+#navbar_chat{
+  -webkit-box-shadow: 0px -2px 20px -7px rgba(0,0,0,0);
+  -moz-box-shadow: 0px -2px 20px -7px rgba(0,0,0,0);
+  box-shadow: 0px -2px 20px -7px rgba(0,0,0,0);
+  border-radius:   2rem 2rem 0 0;
+}
+
+.navbar div{
+    width: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#cartTab{
+      position: relative;
+}
+
+.navbar div img{
+    height: 24px;
+    width: 24px;
+    margin-top: 12px;
+}
+
+.navbar div p{
+    font-size: 10px;
+    color: #b1b2b8;
+    margin-top: 4px;
+}
+body{
+    --main-sidebar-color: rgb(20, 20, 20);
+    --hover-sidebar-color: #2f80ed;
+
+}
+
+.logo{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2f80ed;
+    color: white;
+    border-radius: 4px;
+    padding: none;
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.logo:hover{
+    cursor: initial;
+    background-color: #2f80ed !important;
+}
+
+.logo p{
+    margin: 0 !important;
+    color: white !important;
+}
+
+.logo_text{
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+/*  */
+  .active-tab {
+    background-color: #fff;
+  }
+/*  */
+  .active-tab p{
+    color: #2f80ed !important;
+  }
+
+  .active-tab img{
+    filter: invert(44%) sepia(79%) saturate(2890%) hue-rotate(199deg) brightness(96%) contrast(93%);
+  }
+
+  img{
+    height: 24px;
+    filter: invert(65%);
+  }
+
+.cartBadge{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2f80ed;
+  height: 18px !important;
+  width: fit-content !important;
+  padding: 0 5px !important;
+  border-radius: 9px;
+  font-size: 12px;
+  color: white;
+  top: 8px;
+  right: calc(50% - 24px);
+}
+
+.inactive{
+
+}
+
+.inactive img{
+  filter: none;
+  opacity: 0.3;
+}

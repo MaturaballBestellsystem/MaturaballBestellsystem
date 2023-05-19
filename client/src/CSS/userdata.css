@@ -1,0 +1,99 @@
+.userdata{
+    /* overflow-y: auto; */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.userdata_card{
+    width: fit-content;
+    max-width: 100%;
+    height: fit-content;
+    background-color: #f6f6f6;
+    margin-bottom: 20px;
+    border-radius: 0.5rem;
+}
+.userdata_card_wrap{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;    
+    padding: 10px;
+}
+
+.userdata_card_buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+    .userdata_card_buttons button{
+        background-color: #2f80ed;
+        border: none;
+        outline: none;
+        border-radius: 0.375rem;
+        color: white;
+        padding: 8px 10px;
+        font-size: 16px;
+    }
+
+    .userdata_card_buttons button:hover{
+        cursor: pointer;
+        background-color: #246cc8;
+    }
+
+    .userdata_card_buttons button img{
+        height: 18px;
+        width: 18px;
+        filter: invert(1);
+    }
+.userdata_card_details{
+    display: flex;
+    flex-direction: column;
+}
+
+.userdata_card_pic{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2f80ed;
+}
+    .userdata_card_pic img{
+        height: 24px;
+        width: 24px;
+        filter: invert(1);
+    }
+
+.userdata_card_details{
+    width: 180px;
+    height: fit-content;
+    margin-right: 20px;
+    margin-left: 20px;
+    text-align: center;
+}
+
+.userdata_card_mail{
+    font-size: 12px;
+    width: 180px;
+    color: #9ca4af;
+}
+
+.userdata_card_password{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.userdata_card_password input{
+    border-radius: 0.375rem;
+    height: 36px;
+    width: 100%;        
+    margin-bottom: 0px;
+    margin-right: 0px;
+    border: 0.5px solid #6B7280 !important;
+    font-size: 14px;
+    text-indent: 5px;
+}

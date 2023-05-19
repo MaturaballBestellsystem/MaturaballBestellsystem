@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import user from "./icons/user.svg";
-import './LoginRegister.css';
-import { Routes, Route, useNavigate } from "react-router-dom";
+import logo from "./icons/logo_banner.png";
+
+import './CSS/LoginRegister.css';
+import {useNavigate } from "react-router-dom";
 
 
 const Signup = ({onChange, em, pw, msg }) => {
@@ -80,7 +82,7 @@ const submitForm = (e) =>{
    return (
       <div className='register'>
          <div className='form'>
-            <img src={user}></img>
+            <img className="form_img" src={user} alt=""></img>
             <h4>Registrieren</h4>
             <form onSubmit={(e) => submitForm(e)}>
             <div className='input'>
@@ -126,6 +128,7 @@ const submitForm = (e) =>{
                <button type="submit" className='btn_primary'>Registrieren</button>
 
                <div className='btn_secondary'>Bereits registriert? <Link to="/login">Weiter zum Login</Link></div>
+               <img className="logo_banner" src={logo} alt=""></img>
 
             </form>
 

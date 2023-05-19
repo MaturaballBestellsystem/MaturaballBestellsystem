@@ -1,29 +1,55 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
 import Content from "./Content";
-import { Navigate, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 function OrderTracker() {
   const [activeTab, setActiveTab] = useState("Shop");
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
+  const [cartVal, setCartVal] = useState(getCartQuantity());
+  
+  const updateCartVal = (cartVal) => {
+    setCartVal(cartVal);
+    console.log("Grandparent:"+cartVal)
+  };
+
 
   useEffect(() => {
-    if (!sessionStorage.getItem('jwt')) {
+    // if (!sessionStorage.getItem('jwt')) {
+    if (!Cookies.get('jwt')) {
       navigate('/login');
     }
   }, []);
 
+  function getCartQuantity(){
+    let q = 0;
+    let cart = JSON.parse(sessionStorage.getItem('cart'));
+    if(cart!=null)for(var i=0; i<cart.length; i++) q+= cart[i].quantity;
+    return q;
+  }
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 756);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="OrderTracker">
-      <Sidebar setActiveTab={setActiveTab} />
-      <Content activeTab={activeTab} />
+    <div className="OrderTracker">      
+    <Content activeTab={activeTab} updateCartVal={updateCartVal}/>
+      {isMobile ? (
+        <Navbar setActiveTab={setActiveTab} cartVal={cartVal}/>
+      ) : (
+        <Sidebar setActiveTab={setActiveTab} cartVal={cartVal} />
+      )}
     </div>
   );
 }
 
 export default OrderTracker;
-
-  // const navigate = useNavigate();
-  // const authenticated = sessionStorage.getItem('jwt');
-  // console.log(authenticated);
-  // if(!authenticated) navigate('/login');

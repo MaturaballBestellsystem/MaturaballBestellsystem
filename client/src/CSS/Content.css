@@ -1,0 +1,34 @@
+.content{
+    display: flex; 
+    /* width: calc(100vw - 241px);    */
+    width: 100%;
+    max-width: calc(100% - 241px);
+    overflow-x: hidden;
+    min-height: 100vh;
+    background-color: white;
+    /* background-color: #f9fafb;   */
+    margin-left: 241px;
+}
+
+.wrapper{
+    height: calc(100% - 40px);
+    width: calc(100% - 40px);
+    margin: 20px;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 756px) {
+    .content{
+        margin-left: 0px;
+        max-width: 100%;
+        min-height: 0px;
+        height: calc(100vh - 80px) !important;
+    }
+
+    .wrapper{
+        height: calc(100% - 40px);
+        width: calc(100% - 40px);
+        margin: 20px;
+        box-sizing: border-box;
+    }
+  }

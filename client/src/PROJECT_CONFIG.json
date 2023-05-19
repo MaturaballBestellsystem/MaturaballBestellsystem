@@ -1,0 +1,13 @@
+{
+    "logo_text": "HAK",   
+    "image_upload_size": 2, 
+    "chat_refresh_interval": 5000, 
+    "login_duation": 2,
+    "user_rights" : {
+        "shop" : true,
+        "cart" : true,
+        "orders" : true,
+        "chat" : true,
+        "products" : true
+    }
+}    
