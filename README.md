@@ -3,9 +3,9 @@
 Bei diesem Projekt handelt es sich um ein Bestellsystem für einen Maturaball.
 Folgende Technologien werden genutzt: ReactJS, Node.js, Sqlite
 
-### Funktionen 🏅
+### Funktionen und Details 🏅
 
-- Aufsetzen von der Grundstruktur (React, Node, Sqlite)
+- Basierend ReactJS, NodeJS und Sqlite
 - Login und Registrierungssystem mit Cookies
 - Anlegen von Lageritems
 - Anzeige der Lageritems
