@@ -42,6 +42,7 @@ Folgende Technologien werden genutzt: ReactJS, Node.js, Sqlite
     ```
     
 oder mit
+
     ```
     cd [Projektordner]
     cd client
