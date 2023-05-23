@@ -47,7 +47,7 @@ cd [Projektordner]
 cd client
 npm start
 cd [Projektordner]
-cd client
+cd server
 npm start
 ```
     
