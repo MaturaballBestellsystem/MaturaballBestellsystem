@@ -32,7 +32,7 @@ Folgende Technologien werden genutzt: ReactJS, Node.js, Sqlite
 3)
     ```
     cd [Projektordner]
-    cd client
+    cd server
     npm install
     ```
 
