@@ -5,7 +5,7 @@ Folgende Technologien werden genutzt: ReactJS, Node.js, Sqlite
 
 ### Funktionen und Details 🏅
 
-- Basierend ReactJS, NodeJS und Sqlite
+- Basierend auf ReactJS, NodeJS und Sqlite
 - Login und Registrierungssystem mit Cookies
 - Anlegen von Lageritems
 - Anzeige der Lageritems
