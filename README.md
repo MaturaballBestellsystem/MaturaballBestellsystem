@@ -39,18 +39,17 @@ Folgende Technologien werden genutzt: ReactJS, Node.js, Sqlite
 4) Starte das Programm aus der Shell mit
     ```
     sh start.sh
-    ```
-    
+    ``` 
 oder mit
 
-    ```
-    cd [Projektordner]
-    cd client
-    npm start
-    cd [Projektordner]
-    cd client
-    npm start
-    ```
+```
+cd [Projektordner]
+cd client
+npm start
+cd [Projektordner]
+cd client
+npm start
+```
     
 Die IP Adresse der Website wird im Terminal des Servers beim Start angezeigt.
 Sollte diese nicht bekannt sein ist die IP Adresse, die Adresse des Geräts auf dem das Programm ausgeführt wird auf Port 3000.
