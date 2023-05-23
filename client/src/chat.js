@@ -10,18 +10,18 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [userScrolledUp, setUserScrolledUp] = useState(false);
   const chatFeedRef = useRef(null);
-  const settings = require("./PROJECT_CONFIG.json");
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/getMessages")
+    fetch("http://" + window.location.hostname + ":3001/api/getMessages")
       .then((res) => res.json())
       // .then((res) => console.log(res))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
+    const settings = require("./PROJECT_CONFIG.json");
     const fetchMessages = async () => {
-      const response = await fetch('http://localhost:3001/api/getMessages');
+      const response = await fetch('http://' + window.location.hostname + ':3001/api/getMessages');
       if (response.ok) {
         const messages = await response.json();
         setMessages(messages);
@@ -51,25 +51,25 @@ const Chat = () => {
   }, [messages]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // const user = sessionStorage.getItem('user_nm');
-    const user = Cookies.get('user_nm');
-
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const date = new Date().toLocaleDateString();
-    const response = await fetch('http://localhost:3001/api/postMessage', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user, message, time, date }),
-    });
-    if (response.ok) {
-      setMessage('');
-      setRemainingChars(200);
-      const newMessage = { user, message, time, date };
-      setMessages([...messages, newMessage]);
-    } else {
-      console.error('Error sending message to server.');
-    }      
+      e.preventDefault();
+      if (message.length !== 0) {
+      const user = Cookies.get('user_nm');
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const date = new Date().toLocaleDateString();
+      const response = await fetch('http://' + window.location.hostname + ':3001/api/postMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user, message, time, date }),
+      });
+      if (response.ok) {
+        setMessage('');
+        setRemainingChars(200);
+        const newMessage = { user, message, time, date };
+        setMessages([...messages, newMessage]);
+      } else {
+        console.error('Error sending message to server.');
+      }
+    }
   };
 
   const handleChange = (e) => {

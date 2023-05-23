@@ -16,7 +16,7 @@ const  postSignup = () => {
    var nm = document.getElementById("name").value;
 
 
-   fetch("http://localhost:3001/signup", {
+   fetch("http://"+window.location.hostname+":3001/signup", {
       method: "POST",
       headers: {
          "accept": "application/json",
@@ -33,7 +33,7 @@ const  postSignup = () => {
 const [registeredEmails, setRegisteredEmails] = useState([]);
 
 useEffect(() => {
-   fetch("http://localhost:3001/users")
+   fetch("http://"+window.location.hostname+":3001/users")
    .then((res) => res.json())
    .then((data) => {
       setRegisteredEmails(data.map((user) => user.user_em));

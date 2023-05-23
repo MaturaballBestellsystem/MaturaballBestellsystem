@@ -5,7 +5,7 @@ const Order = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/orders")
+    fetch("http://"+window.location.hostname+":3001/orders")
       .then((res) => res.json())
       .then((json) => {
         for (var i = 0; i < json.length; i++) {
@@ -18,7 +18,7 @@ const Order = () => {
   }, []);
 
   const assignOrder = (orderId) => {
-    fetch(`http://localhost:3001/orders/${orderId}/assign`, {
+    fetch(`http://`+window.location.hostname+`:3001/orders/${orderId}/assign`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const Order = () => {
   };
 
   const unassignOrder = (orderId) => {
-    fetch(`http://localhost:3001/orders/${orderId}/assign`, {
+    fetch(`http://`+window.location.hostname+`:3001/orders/${orderId}/assign`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const Order = () => {
   };
 
   const deleteOrder = (orderId) => {
-    fetch(`http://localhost:3001/orders/${orderId}`, {
+    fetch(`http://`+window.location.hostname+`:3001/orders/${orderId}`, {
       method: 'DELETE',
     })
       .then((res) => {
@@ -91,7 +91,7 @@ const Order = () => {
     <div className="order">
       <h4>Bestellungen</h4>
       <div className='order_wrap'>
-        {orders != "" ? 
+        {orders.length > 0 ? 
         <div className='order_table'>
            {orders.map((order) => (
             <div key={order.order_id} className="order_first_border">

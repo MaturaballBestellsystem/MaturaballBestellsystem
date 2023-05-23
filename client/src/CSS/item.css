@@ -11,7 +11,7 @@
 }
 
 
-.item:hover .item_card{
+.item:hover .item_card, .item:active .item_card{
     /* background-color: #e4e7eb; */
     opacity: 0.6;
 }
@@ -90,5 +90,69 @@
     
         .item:hover{
             cursor: inherit;
+        }
+  
+
+    .item:hover .item_card, .item:active .item_card{
+        -webkit-animation: click 0.2s ease-out;
+        -moz-animation: click 0.2s ease-out;
+        -o-animation: click 0.2s ease-out;
+        animation: click 0.2s ease-out;
+    }
+
+        @-webkit-keyframes click {
+            0% {
+                opacity: 1;
+            }
+        
+            50% {
+                opacity: 0.5;
+            }
+        
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @-moz-keyframes click {
+            0% {
+                opacity: 1;
+            }
+        
+            50% {
+                opacity: 0.5;
+            }
+        
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @-o-keyframes click {
+            0% {
+                opacity: 1;
+            }
+        
+            50% {
+                opacity: 0.5;
+            }
+        
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes click {
+            0% {
+                opacity: 1;
+            }
+        
+            50% {
+                opacity: 0.5;
+            }
+        
+            100% {
+                opacity: 1;
+            }
         }
     }

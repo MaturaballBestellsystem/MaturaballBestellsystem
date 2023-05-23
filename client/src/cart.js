@@ -61,7 +61,7 @@ const Cart = ({setVal}) => {
             room_number: roomNumber,
             items: cart
         };
-        fetch("http://localhost:3001/order", {
+        fetch("http://"+window.location.hostname+":3001/order", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

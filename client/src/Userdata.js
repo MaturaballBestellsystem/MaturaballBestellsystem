@@ -12,15 +12,14 @@ const Userdata = () => {
   const [passwords, setPasswords] = useState({});
   const navigate = useNavigate();
 
-  //check admin rights
+  // Check admin rights
   useEffect(() => {
     console.log(Cookies.get('user_mail'));
-    if(Cookies.get('user_mail') !== "admin") navigate('/ordertracker');
+    if (Cookies.get('user_mail') !== 'admin') navigate('/ordertracker');
   }, []);
 
-
   useEffect(() => {
-    fetch("http://localhost:3001/userdata")
+    fetch(`http://${window.location.hostname}:3001/userdata`)
       .then((res) => res.json())
       .then((json) => {
         console.log(json);
@@ -30,42 +29,42 @@ const Userdata = () => {
   }, []);
 
   const handleDelete = (userId) => {
-    setSelectedUsers(selectedUsers => [...selectedUsers, userId]);
+    setSelectedUsers((selectedUsers) => [...selectedUsers, userId]);
   };
 
   const handleSaveChanges = () => {
-    fetch("http://localhost:3001/deleteusers", {
+    fetch(`http://${window.location.hostname}:3001/api/deleteuser`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         ids: selectedUsers,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        // Update the user list after successful deletion
+        return fetch(`http://${window.location.hostname}:3001/userdata`);
       })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      // Update the user list after successful deletion
-      return fetch('http://localhost:3001/userdata');
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      setUsers(data);
-      setSelectedUsers([]);
-    })
-    .catch(error => console.error('Error:', error));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUsers(data);
+        setSelectedUsers([]);
+      })
+      .catch((error) => console.error('Error:', error));
   };
 
   const handleChangePassword = (userId) => {
     const password = passwords[userId];
-    fetch(`http://localhost:3001/api/changepassword`, {
+    fetch("http://"+window.location.hostname+":3001/api/changepassword", {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -81,7 +80,7 @@ const Userdata = () => {
       }
       console.log("success")
       // Update the user list after successful password change
-      return fetch('http://localhost:3001/userdata');
+      return fetch("http://"+window.location.hostname+":3001/userdata");
     })
     .then(response => {
       if (!response.ok) {

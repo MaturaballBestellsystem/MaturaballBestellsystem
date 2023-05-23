@@ -9,5 +9,9 @@
         "orders" : true,
         "chat" : true,
         "products" : true
+    },
+    "mail" : {
+        "username" : "ordertrackerservice@gmail.com",
+        "password" : "eesybobekqsfwyox"
     }
 }    

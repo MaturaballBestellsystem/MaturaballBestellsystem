@@ -7,12 +7,12 @@ import { Routes, Route } from "react-router-dom";
 import Cookies from 'js-cookie';
 
 class App extends Component {
+
    state = {
       em: '',
       pw: '',
       msg: '',
       jwt: Cookies.get('jwt') || ''
-      // jwt: sessionStorage.getItem('jwt') || ''
    }
 
    render() {

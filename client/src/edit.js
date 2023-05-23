@@ -14,7 +14,7 @@ const Edit = () => {
     const settings = require("./PROJECT_CONFIG.json");
 
     useEffect(() => {
-        fetch("http://localhost:3001/items")
+        fetch("http://"+window.location.hostname+":3001/items")
           .then((res) => res.json())
           .then((json) => setProducts(json))
           .catch((err) => console.log(err));
@@ -90,7 +90,7 @@ const Edit = () => {
                 return;
             }
 
-            fetch("http://localhost:3001/additem", {
+            fetch("http://"+window.location.hostname+":3001/additem", {
                 method: "POST",
                 headers: {
                 "accept": "application/json",
@@ -126,7 +126,7 @@ const Edit = () => {
           setErrorMessage("Please enter a valid stock value.");
           return;
         }
-        fetch(`http://localhost:3001/api/changestock`, {
+        fetch("http://"+window.location.hostname+":3001/api/changestock", {
           method: "PUT",
           headers: {
             "accept": "application/json",
@@ -159,7 +159,7 @@ const Edit = () => {
 
     const saveChanges = () => {
         deletedProducts.forEach((p) => {
-        fetch(`http://localhost:3001/items/${p.item_id}`, {
+        fetch("http://"+window.location.hostname+":3001/items/${p.item_id}", {
             method: "DELETE",
         })
             .then((res) => res.json())

@@ -14,8 +14,7 @@ const Login = ({ onChange, em, pw, msg }) => {
   const postLogin = (e) => {
     setIsLoading(true)
     e.preventDefault();
-    try{
-      fetch("http://localhost:3001/login", {
+    fetch("http://"+window.location.hostname+":3001/login", {
       method: "POST",
       headers: {
         "accept": "application/json",
@@ -28,9 +27,6 @@ const Login = ({ onChange, em, pw, msg }) => {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("successful login");
-        // sessionStorage.setItem('jwt', json.jwt);
-        // sessionStorage.setItem('user_nm',json.msg);
         Cookies.set('jwt', json.jwt, { expires: settings.login_duation, path: '/' });
         Cookies.set('user_nm', json.msg, { expires: settings.login_duation, path: '/' });
         console.log(json.msg)
@@ -41,11 +37,10 @@ const Login = ({ onChange, em, pw, msg }) => {
         else {
           if(em === "admin"){
             Cookies.set('user_mail', em, { expires: settings.login_duation, path: '/' });
-            // sessionStorage.setItem('user_mail', em);
           }
           navigate('/ordertracker');
         }
-      })} catch(error){console.log(error)} 
+      })
   }
 
   return (

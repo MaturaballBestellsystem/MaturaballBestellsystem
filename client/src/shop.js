@@ -6,7 +6,7 @@ const Shop = ({ setVal }) => {
 
   const [items, setItems] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/items")
+    fetch("http://"+window.location.hostname+":3001/items")
       .then((res) => res.json())
       .then((json) => setItems(json))
       .catch((err) => console.log(err));
