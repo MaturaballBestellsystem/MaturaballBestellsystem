@@ -1,57 +1,40 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const sql = require("sqlite3").verbose();
-const cors = require("cors");
-const jwt = require("jsonwebtoken");
+const express = require("express"); //Web Server Framework
+const bcrypt = require("bcrypt"); //Encrypting Passwords
+const sql = require("sqlite3").verbose(); //Handling SQL Databases
+const cors = require("cors"); //Handling Cross-Origin-Resource Sharing
+const jwt = require("jsonwebtoken"); //Used for securely transmittion information between Server and Client
 
 const app = express();
-const bodyParser = require("body-parser");
+const bodyParser = require("body-parser"); //Used for handling POST requests
 const jsonParser = bodyParser.json();
 
+
+//Settings for image-upload size
 const settings = require("../client/src/PROJECT_CONFIG.json");
 const maxRequestBodySize = settings.image_upload_size+'mb';
-
 app.use(express.json({ limit: maxRequestBodySize }));
 app.use(express.urlencoded({ limit: maxRequestBodySize, extended: true }));
 
-// app.use(function (req, res, next) {
-//    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // "*"
-//    // res.header("Access-Control-Allow-Origin", "http://127.0.0.1:3000"); // "*"
-
-//    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//    next();
-// });
-
-// app.use((req, res, next) => {
-//    res.header('Access-Control-Allow-Origin', '*');
-//    res.header(
-//      'Access-Control-Allow-Headers',
-//      'Origin, X-Requested-With, Content-Type, Accept'
-//    );
-//    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//    next();
-//  });
-
-// const corsOptions = {
-//    origin: ['http://localhost:3000', 'http://localhost:3001'],
-//  };
- 
+//CORS Settings
+var ipserver = require("ip"); //Returns the IP of the ExpressJS Server
+ip = "http://"+ipserver.address()+":3000";
+console.dir ("React IP: " +  ip );
 
 app.use(function (req, res, next) {
-   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // "*"
+   res.header("Access-Control-Allow-Origin", ip);
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
    next();
 });
-
 app.use(cors());
 
 
+//Initialise SQL Database
 const db = new sql.Database("./database.db", (err) => {
    if (err) {
       throw err;
    }
-   console.log("opening db connection")
-   // create table for users  if needed
+   console.log("Opening Database connection")
+   // Create table for users  if needed
    let s = `CREATE TABLE IF NOT EXISTS users (
                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                user_em text NOT NULL UNIQUE,
@@ -62,11 +45,12 @@ const db = new sql.Database("./database.db", (err) => {
       if (err) {
          throw err;
       }
-      // check if table is emptyy
+      // Check if table is emptyy
       db.get("SELECT COUNT(*) as count FROM users", [], (err, row) => {
          if (err) {
             throw err;
          }
+         //Insert Admin user on if table is empty
          if (row.count === 0) {
             bcrypt.hash("root", 14, (err, hash_pw) => {
                let q = `INSERT INTO users (user_em, user_pw, user_nm) VALUES ("admin", "${hash_pw}", "Admin");`
@@ -79,7 +63,7 @@ const db = new sql.Database("./database.db", (err) => {
          }
       });
    });
-   // create table for items if needed
+   // Create table for items if needed
    let i = `CREATE TABLE IF NOT EXISTS items (
       item_id INTEGER PRIMARY KEY AUTOINCREMENT,
       item_type INTEGER NOT NULL,
@@ -95,7 +79,7 @@ const db = new sql.Database("./database.db", (err) => {
       }
    });
 
-   // create table for orders if needed
+   // Create table for orders if needed
    let o = `CREATE TABLE IF NOT EXISTS orders (
       order_id INTEGER PRIMARY KEY AUTOINCREMENT,
       order_usernm text NOT NULL,
@@ -109,7 +93,7 @@ const db = new sql.Database("./database.db", (err) => {
       }
    });
 
-   // create table for chat if needed
+   // Create table for chat if needed
    let c = `CREATE TABLE IF NOT EXISTS msg (
       msg_id INTEGER PRIMARY KEY AUTOINCREMENT,
       msg_usr text NOT NULL,
@@ -122,9 +106,10 @@ const db = new sql.Database("./database.db", (err) => {
          throw err;
       }
    });
+   console.log("Database connection established")
 });
 
-
+//Returns a JSON containing all user emails
 app.get("/users", (req, res) => {
    let q = `SELECT user_em FROM users;`;
    db.all(q, [], (err, rows) => {
@@ -136,6 +121,7 @@ app.get("/users", (req, res) => {
    });
 });
 
+//Returns a JSON containing user ID, user Email and user Name
 app.get("/userdata", (req, res) => {
    let q = `SELECT user_id, user_em, user_nm FROM users;`;
    db.all(q, [], (err, rows) => {
@@ -147,7 +133,7 @@ app.get("/userdata", (req, res) => {
    });
 });
 
-
+//Inserts a new order into the database
 app.post('/order', (req, res) => {
    const { user_nm, room_number, items } = req.body;
    const itemsJSON = JSON.stringify(items);
@@ -162,9 +148,7 @@ app.post('/order', (req, res) => {
    });
 });
 
-
-
-// Get all orders
+// Returns a JSON containing all orders
 app.get('/orders', (req, res) => {
    db.all('SELECT * FROM orders', (err, rows) => {
       if (err) {
@@ -176,7 +160,7 @@ app.get('/orders', (req, res) => {
    });
 });
 
-// PUT /orders/:orderId/assign
+//Switches the status of an order
 app.put('/orders/:orderId/assign', (req, res) => {
    const orderId = req.params.orderId;
    const assigned = req.body.order_assigned;
@@ -184,7 +168,6 @@ app.put('/orders/:orderId/assign', (req, res) => {
    if (assigned === null || assigned === undefined) {
       res.status(400).send('Assigned value is required');
    } else {
-      // console.log(assigned);
       db.run(`UPDATE orders SET order_assigned = ? WHERE order_id = ?`, [assigned, orderId], function (err) {
          if (err) {
             console.error(err.message);
@@ -205,7 +188,7 @@ app.put('/orders/:orderId/assign', (req, res) => {
    }
 });
 
-// DELETE /orders/:orderId
+//Deletes an order from the database and reduces the stock 
 app.delete('/orders/:orderId', (req, res) => {
    const orderId = req.params.orderId;
    db.get(`SELECT * FROM orders WHERE order_id = ?`, [orderId], (err, row) => {
@@ -236,7 +219,7 @@ app.delete('/orders/:orderId', (req, res) => {
    });
 });
 
-
+// Inserts a new chat message into the database
 app.post('/api/postMessage', (req, res) => {
    const { user, message, time, date } = req.body;
 
@@ -263,7 +246,7 @@ app.post('/api/postMessage', (req, res) => {
    });
 });
 
-
+//Returns a JSON containing all chat messages, ordered my date and time
 app.get('/api/getMessages', (req, res) => {
    db.all('SELECT * FROM msg ORDER BY msg_date, msg_time', (err, rows) => {
       if (err) {
@@ -281,11 +264,8 @@ app.get('/api/getMessages', (req, res) => {
    });
 });
 
-
-
+//Function to compare the Password to a user email using bcrypt and setting JWT if successful
 app.post("/login", jsonParser, (req, res) => {
-   console.log("login attempt");
-
    let user_em = req.body.em;
    let user_pw = req.body.pw;
    let q = `SELECT user_id, user_em, user_pw, user_nm FROM users WHERE user_em = "${user_em}";`
@@ -328,12 +308,10 @@ app.post("/login", jsonParser, (req, res) => {
          })
       })
    })
-   console.log("login end");
-
 })
 
+//Function for signing up using name, email and password. Inserts a new User into the database
 app.post("/signup", jsonParser, (req, res) => {
-
    let user_nm = req.body.nm;
    let user_em = req.body.em;
    let user_pw = req.body.pw;
@@ -351,13 +329,13 @@ app.post("/signup", jsonParser, (req, res) => {
             msg: "signup successful",
             jwt: jwt.sign({ sub: `${this.lastID}` }, "secret")
          })
+         sendmailDirectly(user_em,"Registrierung erfolgreich", "<div><h3>Herzlich Willkommen "+user_nm+",  </h3><p>Deine Registrierung war erfolgreich!</p><p>Bei Fragen zur Funktionalität oder zum Login, wende dich an das Team :)</p></div>")
       })
    })
 })
 
-
+//Adding an item to the database and saving the thumbnail
 const fs = require("fs");
-
 app.post("/additem", jsonParser, (req, res) => {
    let item_type = req.body.item_type;
    let item_name = req.body.item_name;
@@ -366,10 +344,8 @@ app.post("/additem", jsonParser, (req, res) => {
    let item_stock = req.body.item_stock;
    let item_img = req.body.item_img;
    let item_url = req.body.item_url;
-
    let base64Image = item_url.split(';base64,').pop();
 
-   //console.log(item_url);
    fs.writeFile('../client/src/thumbnails/' + item_img, base64Image, { encoding: 'base64' }, function (err) {
       console.log(item_img);
       if (err) console.log(err.message);
@@ -390,7 +366,7 @@ app.post("/additem", jsonParser, (req, res) => {
    })
 })
 
-
+//Returns a JSON containing all Items
 app.get("/items", (req, res) => {
    db.all("SELECT * FROM items", [], (err, rows) => {
       if (err) {
@@ -402,6 +378,7 @@ app.get("/items", (req, res) => {
    });
 });
 
+//Deletes an Item from the Database by its ID
 app.delete("/items/:id", (req, res) => {
    const itemId = req.params.id;
    const q = `SELECT item_img FROM items WHERE item_id = ${itemId}`;
@@ -439,13 +416,12 @@ app.delete("/items/:id", (req, res) => {
 });
 
 
-
+//Update the Password of a user by his ID
 app.put("/api/changepassword", (req, res) => {
    console.log("try changing");
    const id = req.body.id;
    const pw = req.body.pw;
 
-   // Update user password
    bcrypt.hash(pw, 14, (err, hash_pw) => {
       if (err) {
          console.log(err.message);
@@ -458,27 +434,30 @@ app.put("/api/changepassword", (req, res) => {
             return res.status(500).send("Error updating user password");
          }
          res.status(200).send("User password updated successfully");
+         sendmailByID(id,"Passwort zurückgesetzt", "<div><h3>Dein Passwort wurde zurückgesetzt</h3><p>Das neue Passwort lautet: "+pw+"</p></div>")
       });
    });
 });
 
-
-app.delete("/api/deleteuser", (req, res) => {
-   console.log("try changing");
-   const id = req.body.id;
-   console.log(id);
-   // Delete user
-   let q = `DELETE FROM users WHERE user_id = ${id};`;
+//Delete a user from the database by his ID
+app.delete('/api/deleteuser', (req, res) => {
+   console.log('try deleting');
+   const ids = req.body.ids; // Use "ids" instead of "id" to handle multiple user IDs
+   console.log(ids);
+   // Delete users
+   let q = `DELETE FROM users WHERE user_id IN (${ids.join()});`;
    db.run(q, [], (err) => {
       if (err) {
          console.log(err.message);
-         return res.status(500).send("Error deleting user");
+         return res.status(500).send("Error deleting users");
       }
-      res.status(200).send("User deleted successfully");
+      res.status(200).send("Users deleted successfully");
+      console.log("User deleted successfully");
    });
+});
+ 
 
-})
-
+//Change the stock of a product by its ID
 app.put('/api/changestock', (req, res) => {
    const { item_id, item_type, item_name, item_size, item_sum, item_stock, item_img } = req.body;
    const id = item_id;
@@ -495,12 +474,103 @@ app.put('/api/changestock', (req, res) => {
    });
  });
 
+//Mail Service 
+var nodemailer = require('nodemailer');
+
+//Function to send a mail based on the user ID
+function sendmailByID(id, subject, content) {
+   getMailById(id)
+      .then(function(mail) {
+         //authenticate at mail provider with credentials 
+         var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+               user: settings.mail.username,
+               pass: settings.mail.password
+            }
+         });
+         //Path of logo
+         const imagePath = '../client/src/icons/logo_banner_mail.png';
+
+         var mailOptions = {
+            from: settings.mail.username,
+            to: mail,
+            subject: subject,
+            html: "<div style='height: fit-content; width:fit-content; border-radius: 0.5rem; border: 0.5px solid #6B7280 !important; background: #f7f7f7; padding: 20px; box-sizing: border-box; text-align:center;'><img src='cid:logo@ordertracker' style = 'width:150px; margin-bottom: 20px;' />"+content+"<br/><p style='font-weight:bold;'>LG, <br/>dein Ordertracker Team</p></div>",
+            attachments: [
+               {
+                 filename: 'logo_banner_mail.png',
+                 path: imagePath,
+                 cid: 'logo@ordertracker' // Content ID, used as the image source in the email
+               }
+             ]
+         };
+         
+         return transporter.sendMail(mailOptions);
+      })
+      .then(function(info) {
+         console.log('Email sent: ' + info.response);
+      })
+      .catch(function(error) {
+         console.log(error);
+      });
+}
+//Function to send a mail to a mail directly
+function sendmailDirectly(mail, subject, content) {
+         var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+               user: settings.mail.username,
+               pass: settings.mail.password
+            }
+         });
+         const imagePath = '../client/src/icons/logo_banner_mail.png';
+         var mailOptions = {
+            from: settings.mail.username,
+            to: mail,
+            subject: subject,
+            html: "<div style='height: fit-content; width:fit-content; border-radius: 0.5rem; border: 0.5px solid #6B7280 !important; background: #f7f7f7; padding: 20px; box-sizing: border-box; text-align:center;'><img src='cid:logo@ordertracker' style = 'width:150px; margin-bottom: 20px;' />"+content+"<br/><p style='font-weight:bold;'>LG, <br/>dein Ordertracker Team</p></div>",
+            attachments: [
+               {
+                 filename: 'logo_banner_mail.png',
+                 path: imagePath,
+                 cid: 'logo@ordertracker' // Content ID, used as the image source in the email
+               }
+             ]
+         };
+         return transporter.sendMail(mailOptions);
+         
+}
+
+//Function to return the Mail based on a user ID
+function getMailById(id) {
+   return new Promise((resolve, reject) => {
+      // SQL query to retrieve the user email by ID
+      const query = `SELECT user_em FROM users WHERE user_id = ?`;
+      
+      // Execute the query with the specified user ID
+      db.get(query, [id], (err, row) => {
+         if (err) {
+            console.error(err.message);
+            reject(err);
+         } else {
+            if (row) {
+               // Resolve the promise with the user email
+               resolve(row.user_em);
+               console.log('User Mail found:', row.user_em);
+            } else {
+               console.log('User not found');
+               reject(new Error('User not found'));
+            }
+         }
+      });
+   });
+}
 
 
 
 
-// app.listen(3001, () => console.log("Server started on port 3001"));
-// app.listen(3001, '0.0.0.0'); // or server.listen(3001, '0.0.0.0'); for all interfaces
+//Start listener of ExpressJS Server
 var listener = app.listen(3001, () => {
-    console.log('Express server started on port %s at %s', listener.address().port, listener.address().address);
+      console.log('Express server started on port %s at %s', listener.address().port, ipserver.address());
 });
